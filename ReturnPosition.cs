@@ -6,30 +6,33 @@ using System.Threading.Tasks;
 
 namespace D4_SnakeNLadderSimulator
 {
-    internal class CheckOptions
-    {   //method to check for an option and move the token accordingly
-        public void CheckOptionsNMove(int option, int dieRollNum)
+    public class ReturnPosition
+    {
+        //Method to match option, move token accordingly and return current position
+        public int ReturnCurrentPosition(int option, int dieRoll, int position)
         {
-            int position = 0;
-
+            //Selection statement to select option and change position accordingly
             switch (option)
             {
-                case 1: //No play
+                case 1: //No Play
                     Console.WriteLine("Option : No Play");
                     position = position;
                     Console.WriteLine("Your Current Position : " + position);
                     break;
                 case 2: //Ladder
                     Console.WriteLine("Option : Ladder");
-                    position += dieRollNum;
+                    position += dieRoll;
                     Console.WriteLine("Your Current Position : " + position);
                     break;
                 default: //Snake
                     Console.WriteLine("Option : Snake");
-                    position -= dieRollNum;
+                    position -= dieRoll;
+                    if (position < 0) //if position becomes less than 0, player restarts from START i.e 0
+                    { position = 0; }
                     Console.WriteLine("Your Current Position : " + position);
                     break;
             }
+            return position;
 
         }
     }
