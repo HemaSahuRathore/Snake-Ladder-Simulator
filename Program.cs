@@ -1,16 +1,16 @@
 ﻿namespace D4_SnakeNLadderSimulator
 { /// <summary>
-  /// UC5 : Ensure the player gets to exact winning position 100. 
-  /// In case the player position go above 100, player stays in the same previous position till the player gets the exact
+  /// UC6 : Report the number of times the dice was played to win the game and also the position after every die role
   /// </summary>
     public class Program
     {
         //Entrypoint of console app
         static void Main(string[] args)
-        {
+        {   //Local Variables
             int position = 0;
+            int dieRollCount = 0;
 
-            //constant variable
+            //constant variables
             const int START_POSITION = 0;
             const int WINNING_POSITION = 100;
 
@@ -21,14 +21,19 @@
 
             while (position != WINNING_POSITION)
             {
-                int dieRollNum = random.Next(1, 7); //using next function to generate number between 1 & 6
+                int dieRollNum = random.Next(1, 7);
+                dieRollCount++; //incrementing dieRollCount everytime die roll to get num. of times Die rolled
                 Console.WriteLine("\nAfter Rolling die, Dice Number : " + dieRollNum);
 
-                int option = random.Next(1, 4); //Random function to generate options between 1 & 3
-                
-                ReturnPosition returnPositionObj = new ReturnPosition(); //Creating object of ReturnPosition class to access ReturnCurrentPosition method
-                position = returnPositionObj.ReturnCurrentPosition(option, dieRollNum, position); //storing current position to run the loop
+                int option = random.Next(1, 4);
 
+                //Creating object of ReturnPosition class 
+                ReturnPosition returnPositionObj = new ReturnPosition();
+                position = returnPositionObj.ReturnCurrentPosition(option, dieRollNum, position); //storing current position to run the  while loop
+
+                //Printing Die count once player reaches 100
+                if (position == WINNING_POSITION)
+                    Console.WriteLine("\nThe number of times Die rolled to Win the Game : " + dieRollCount);
             }
 
         }
