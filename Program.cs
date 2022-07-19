@@ -1,39 +1,60 @@
 ﻿namespace D4_SnakeNLadderSimulator
 { /// <summary>
-  /// UC6 : Report the number of times the dice was played to win the game and also the position after every die role
+  /// UC7 : Play the game with 2 Player. In this case if a Player gets a Ladder then plays again.
+  /// Finally report which Player won the game
   /// </summary>
     public class Program
     {
         //Entrypoint of console app
         static void Main(string[] args)
-        {   //Local Variables
-            int position = 0;
-            int dieRollCount = 0;
+        {   //local variables
+            int player1Position = 0;
+            int player2Position = 0;
+            int diceRollCount = 0;
 
-            //constant variables
+            //constant variable
             const int START_POSITION = 0;
             const int WINNING_POSITION = 100;
 
             Console.WriteLine("Welcome to the Snake and Ladder Simulator Program");
-            Console.WriteLine("\nThe Position of your TOKEN in the board is START : " + START_POSITION);
+            Console.WriteLine("Mode : Two Player");
+            Console.WriteLine("\nThe Position of both the TOKEN in the board is START : " + START_POSITION);
 
-            Random random = new Random(); //Creating Random class object to access Next function
+            Random random = new Random();
 
-            while (position != WINNING_POSITION)
+            while (player1Position != WINNING_POSITION && player2Position != WINNING_POSITION)
             {
                 int dieRollNum = random.Next(1, 7);
-                dieRollCount++; //incrementing dieRollCount everytime die roll to get num. of times Die rolled
+                diceRollCount++; //increasing dice roll count everytime die rolled to pass the die to next player
                 Console.WriteLine("\nAfter Rolling die, Dice Number : " + dieRollNum);
 
-                int option = random.Next(1, 4);
+                if (diceRollCount % 2 == 1)
+                {
+                    int option = random.Next(1, 4);
+                    if (option == 2) //option 2 = Ladder
+                    {
+                        diceRollCount -= 1; //decrement dice roll count by -1 to repeat the player turn
+                    }
+                    Console.WriteLine("Player 1");
+                    ReturnPosition returnPositionObj = new ReturnPosition();
+                    player1Position = returnPositionObj.ReturnCurrentPosition(option, dieRollNum, player1Position);
+                    if (player1Position == WINNING_POSITION) //checks if Player 1 reached 100
+                        Console.WriteLine("\nPlayer 1 won the Game");
+                }
+                else
+                {
+                    int option = random.Next(1, 4);
+                    if (option == 2)//option 2 = Ladder
+                        diceRollCount -= 1; //decrement dice roll count by -1 to repeat the player turn(Player plays again)
 
-                //Creating object of ReturnPosition class 
-                ReturnPosition returnPositionObj = new ReturnPosition();
-                position = returnPositionObj.ReturnCurrentPosition(option, dieRollNum, position); //storing current position to run the  while loop
+                    Console.WriteLine("Player 2");
+                    ReturnPosition returnPositionObj = new ReturnPosition();
+                    player2Position = returnPositionObj.ReturnCurrentPosition(option, dieRollNum, player2Position);
+                    if (player2Position == WINNING_POSITION) //checks if Player 1 reached 100
+                        Console.WriteLine("\nPlayer 2 won the game");
 
-                //Printing Die count once player reaches 100
-                if (position == WINNING_POSITION)
-                    Console.WriteLine("\nThe number of times Die rolled to Win the Game : " + dieRollCount);
+                }
+
             }
 
         }
